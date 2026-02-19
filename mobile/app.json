@@ -1,0 +1,64 @@
+{
+  "expo": {
+    "name": "Al Samaha",
+    "slug": "alsamaha",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1B5E20"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.alsamaha.app",
+      "config": {
+        "googleMapsApiKey": "AIzaSyDr_MxKSBAQOFUaTbpbSdpMKEqLt5p1YZw"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Al Samaha needs your location to deliver orders and show your driver on the map.",
+        "NSLocationAlwaysUsageDescription": "Al Samaha drivers need background location for live tracking.",
+        "NSCameraUsageDescription": "Used for delivery photo confirmation."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1B5E20"
+      },
+      "package": "com.alsamaha.app",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDr_MxKSBAQOFUaTbpbSdpMKEqLt5p1YZw"
+        }
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "VIBRATE",
+        "RECEIVE_BOOT_COMPLETED"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-location",
+      "expo-notifications",
+      [
+        "expo-camera",
+        { "cameraPermission": "Allow Al Samaha to access your camera for delivery confirmation." }
+      ]
+    ],
+    "extra": {
+      "eas": { "projectId": "YOUR_EAS_PROJECT_ID" }
+    }
+  }
+}

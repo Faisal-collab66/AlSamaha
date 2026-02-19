@@ -1,0 +1,30 @@
+{
+  "name": "alsamaha-admin",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "typescript": "~4.9.5",
+    "firebase": "^10.12.5",
+    "react-router-dom": "^6.24.0",
+    "@googlemaps/js-api-loader": "^1.16.6",
+    "date-fns": "^3.6.0",
+    "recharts": "^2.12.7",
+    "react-hot-toast": "^2.4.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test"
+  },
+  "browserslist": {
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+  }
+}

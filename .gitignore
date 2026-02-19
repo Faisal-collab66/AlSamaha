@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment variables (never commit secrets)
+.env
+.env.local
+.env.*.local
+mobile/.env
+admin-panel/.env
+
+# Firebase service account keys (never commit)
+scripts/*.json
+!scripts/tsconfig.json
+
+# Build outputs
+functions/lib/
+admin-panel/build/
+mobile/.expo/
+mobile/dist/
+
+# Expo
+mobile/.expo-shared/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Local tooling
+.claude/
