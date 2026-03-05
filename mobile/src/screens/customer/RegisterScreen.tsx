@@ -52,7 +52,7 @@ export default function RegisterScreen() {
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
           <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join Al Samaha today</Text>
+          <Text style={styles.subtitle}>Join SamahaXpress today</Text>
         </View>
 
         {(['name', 'phone', 'email', 'password', 'confirmPassword'] as const).map((field) => {

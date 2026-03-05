@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Al Samaha",
-    "slug": "alsamaha",
+    "name": "SamahaXpress",
+    "slug": "samahaxpress",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -47,7 +47,7 @@
       ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./web/delivery-bike.png"
     },
     "plugins": [
       "expo-location",

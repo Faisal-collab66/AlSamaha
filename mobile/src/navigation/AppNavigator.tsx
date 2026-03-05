@@ -6,7 +6,7 @@ import { onAuthChange, fetchUserProfile } from '../services/auth.service';
 import { useAuthStore } from '../store/authStore';
 import { Colors } from '../constants/theme';
 
-import AuthNavigator from './AuthNavigator';
+import PublicNavigator from './PublicNavigator';
 import CustomerNavigator from './CustomerNavigator';
 import DriverNavigator from './DriverNavigator';
 
@@ -32,20 +32,20 @@ export default function AppNavigator() {
 
   if (!isInitialized) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.primary }}>
-        <ActivityIndicator color={Colors.secondary} size="large" />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.primaryDeep }}>
+        <ActivityIndicator color={Colors.secondaryLight} size="large" />
       </View>
     );
   }
 
   return (
     <NavigationContainer>
-      {!user ? (
-        <AuthNavigator />
-      ) : user.role === 'driver' ? (
+      {user?.role === 'driver' ? (
         <DriverNavigator />
-      ) : (
+      ) : user?.role === 'customer' || user?.role === 'admin' ? (
         <CustomerNavigator />
+      ) : (
+        <PublicNavigator />
       )}
     </NavigationContainer>
   );

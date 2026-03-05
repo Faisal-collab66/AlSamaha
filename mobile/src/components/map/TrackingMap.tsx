@@ -55,7 +55,7 @@ export function TrackingMap({
       {/* Restaurant Marker */}
       <Marker
         coordinate={{ latitude: restaurantLat, longitude: restaurantLng }}
-        title="Al Samaha Restaurant"
+        title="SamahaXpress Restaurant"
       >
         <View style={[styles.markerContainer, { backgroundColor: Colors.secondary }]}>
           <Text style={styles.markerText}>🍽</Text>

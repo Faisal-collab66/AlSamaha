@@ -1,18 +1,20 @@
 export const Colors = {
-  // Brand
-  primary: '#1B5E20',       // Deep green
-  primaryLight: '#2E7D32',
-  primaryDark: '#145A18',
-  secondary: '#F9A825',     // Gold
+  // Brand — purple palette matching alsamahatasty.com
+  primary: '#5025d1',
+  primaryLight: '#673de6',
+  primaryDark: '#2f1c6a',
+  primaryDeep: '#1F1346',
+  secondary: '#F9A825',     // Gold accent
   secondaryLight: '#FFCA28',
   secondaryDark: '#F57F17',
+  accent: '#00b090',        // Teal accent from website
 
   // Neutrals
-  background: '#F8F9FA',
+  background: '#F5F4FF',
   surface: '#FFFFFF',
-  surfaceSecondary: '#F1F3F5',
-  border: '#E0E0E0',
-  divider: '#F0F0F0',
+  surfaceSecondary: '#EBE4FF',
+  border: '#D5DFFF',
+  divider: '#EDE9FF',
 
   // Text
   textPrimary: '#1A1A1A',
@@ -36,12 +38,12 @@ export const Colors = {
   statusCancelled: '#EF4444',
 
   // Map
-  mapDriver: '#1B5E20',
+  mapDriver: '#5025d1',
   mapRestaurant: '#F9A825',
   mapCustomer: '#EF4444',
 
   // Misc
-  overlay: 'rgba(0,0,0,0.5)',
+  overlay: 'rgba(31,19,70,0.6)',
   shadow: '#000000',
   transparent: 'transparent',
 };

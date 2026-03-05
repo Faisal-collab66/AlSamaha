@@ -62,7 +62,7 @@ export default function ProfileScreen() {
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
 
-        <Text style={styles.version}>Al Samaha v1.0.0</Text>
+        <Text style={styles.version}>SamahaXpress v1.0.0</Text>
       </ScrollView>
     </SafeAreaView>
   );

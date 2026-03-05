@@ -3,6 +3,10 @@ const path = require('path');
 
 const config = getDefaultConfig(__dirname);
 
+// Use 'react-native' exports condition so packages like Firebase load
+// their React Native build instead of the browser/default build.
+config.resolver.unstable_conditionNames = ['require', 'default', 'react-native'];
+
 const GENERIC_STUB = path.resolve(__dirname, 'src/web-stubs/generic-module.js');
 
 const WEB_STUBS = {
@@ -18,6 +22,8 @@ const WEB_STUBS = {
     __dirname,
     'src/web-stubs/TurboModuleRegistry.js',
   ),
+  'react-native/Libraries/Utilities/codegenNativeCommands': GENERIC_STUB,
+  'react-native-maps': GENERIC_STUB,
 };
 
 config.resolver.resolveRequest = (context, moduleName, platform) => {
