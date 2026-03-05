@@ -174,7 +174,6 @@ export default function HomeScreen() {
           <View style={styles.heroBtns}>
             <TouchableOpacity style={styles.orderNowBtn} onPress={goToMenu} activeOpacity={0.85}>
               <Text style={styles.orderNowText}>Order Now</Text>
-              <Ionicons name="arrow-forward" size={16} color="#1a1a2e" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.viewMenuBtn} onPress={goToMenu} activeOpacity={0.85}>
               <Text style={styles.viewMenuText}>View Menu</Text>
@@ -241,7 +240,6 @@ export default function HomeScreen() {
           </Text>
           <TouchableOpacity style={styles.bigOrderBtn} onPress={goToMenu} activeOpacity={0.85}>
             <Text style={styles.bigOrderBtnText}>Order Now</Text>
-            <Ionicons name="arrow-forward" size={18} color="#1a1a2e" />
           </TouchableOpacity>
         </View>
       </View>
@@ -280,8 +278,8 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionEyebrow}>WHAT PEOPLE SAY</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-          <Image source={REVIEW_ICON} style={{ width: 34, height: 34 }} resizeMode="contain" />
           <Text style={styles.sectionHeadline}>Customer Reviews</Text>
+          <Image source={REVIEW_ICON} style={{ width: 34, height: 34 }} resizeMode="contain" />
         </View>
 
         {/* Submit Review Form */}
@@ -339,9 +337,8 @@ export default function HomeScreen() {
             onPress={() => navigation.navigate('Reviews')}
             activeOpacity={0.85}
           >
-            <Image source={REVIEW_ICON} style={styles.reviewBtnIcon} resizeMode="contain" />
             <Text style={styles.seeAllReviewsText}>See All {reviews.length} Reviews</Text>
-            <Ionicons name="arrow-forward" size={16} color="#D4AF37" />
+            <Image source={REVIEW_ICON} style={styles.reviewBtnIcon} resizeMode="contain" />
           </TouchableOpacity>
         )}
         {reviews.length === 0 && (
@@ -350,9 +347,8 @@ export default function HomeScreen() {
             onPress={() => navigation.navigate('Reviews')}
             activeOpacity={0.85}
           >
-            <Image source={REVIEW_ICON} style={styles.reviewBtnIcon} resizeMode="contain" />
             <Text style={styles.seeAllReviewsText}>See All Reviews</Text>
-            <Ionicons name="arrow-forward" size={16} color="#D4AF37" />
+            <Image source={REVIEW_ICON} style={styles.reviewBtnIcon} resizeMode="contain" />
           </TouchableOpacity>
         )}
       </View>
@@ -746,7 +742,7 @@ const styles = StyleSheet.create({
   biryaniImg: { width: '100%', height: 440, position: 'absolute', top: 0, left: 0 },
   biryaniGrad: { position: 'absolute', bottom: 0, left: 0, right: 0, height: 240 },
   biryaniContent: { position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2, padding: Spacing.xl },
-  biryaniEyebrow: { fontSize: FontSize.xs, fontWeight: FontWeight.semiBold, color: '#D4AF37', letterSpacing: 2, textTransform: 'uppercase', marginBottom: Spacing.xs },
+  biryaniEyebrow: { fontSize: 15, fontWeight: FontWeight.bold, color: '#FFD700', letterSpacing: 3, textTransform: 'uppercase', marginBottom: Spacing.sm, textShadowColor: 'rgba(0,0,0,0.8)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
   biryaniTitle: { fontSize: 34, fontWeight: FontWeight.extraBold, color: '#fff', marginBottom: Spacing.sm },
   biryaniDesc: { fontSize: 16, color: 'rgba(255,255,255,0.95)', lineHeight: 26, marginBottom: Spacing.lg },
 
