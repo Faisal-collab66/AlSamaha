@@ -126,10 +126,7 @@ export default function HomeScreen() {
   const Header = (
     <View style={[styles.headerWrapper, { paddingTop: insets.top }]}>
       <View style={styles.topBar}>
-        <View style={styles.logoRow}>
-          <Image source={LOGO} style={styles.logoImg} resizeMode="contain" />
-          <Text style={styles.brandName}>SamahaXpress</Text>
-        </View>
+        <Text style={styles.brandName}>SamahaXpress</Text>
         {user ? (
           <TouchableOpacity onPress={() => navigation.navigate('ProfileTab')} style={styles.avatarCircle}>
             <Text style={styles.avatarText}>{user.name?.[0]?.toUpperCase() ?? '?'}</Text>
@@ -163,6 +160,7 @@ export default function HomeScreen() {
           style: { position: 'absolute', width: '100%', height: '100%', objectFit: 'cover', top: 0, left: 0, zIndex: 0 },
         })}
         <View style={styles.heroVideoOverlay} />
+        <Image source={LOGO} style={styles.heroLogo} resizeMode="contain" />
         <View style={{ zIndex: 2 }}>
           <Text style={styles.heroEyebrow}>AUTHENTIC EASTERN CUISINE</Text>
           <Text style={styles.heroHeadline}>Welcome to{'\n'}Al Samaha</Text>
@@ -270,7 +268,6 @@ export default function HomeScreen() {
         </View>
         <TouchableOpacity style={[styles.bigOrderBtn, { marginTop: Spacing.md }]} onPress={goToMenu} activeOpacity={0.85}>
           <Text style={styles.bigOrderBtnText}>Order Now</Text>
-          <Ionicons name="arrow-forward" size={18} color="#1a1a2e" />
         </TouchableOpacity>
       </View>
 
@@ -687,6 +684,7 @@ const styles = StyleSheet.create({
     position: 'relative', overflow: 'hidden', minHeight: 420, justifyContent: 'flex-end',
   },
   heroVideoOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1 },
+  heroLogo: { position: 'absolute', top: Spacing.lg, right: Spacing.lg, width: 110, height: 110, zIndex: 3 },
   heroEyebrow: { fontSize: FontSize.xs, fontWeight: FontWeight.semiBold, color: '#D4AF37', letterSpacing: 2, textTransform: 'uppercase', marginBottom: Spacing.sm },
   heroHeadline: { fontSize: 38, fontWeight: FontWeight.extraBold, color: '#fff', lineHeight: 46, marginBottom: Spacing.xs },
   heroTagline: { fontSize: FontSize.md, color: 'rgba(255,255,255,0.75)', fontStyle: 'italic', marginBottom: Spacing.md },
