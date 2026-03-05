@@ -231,7 +231,7 @@ export default function HomeScreen() {
 
       {/* BIRYANI FEATURE SECTION */}
       <View style={styles.biryaniFeature}>
-        <Image source={BIRYANI_IMG} style={styles.biryaniImg} resizeMode="contain" />
+        <Image source={BIRYANI_IMG} style={styles.biryaniImg} resizeMode="cover" />
         <LinearGradient colors={['transparent', 'rgba(13,10,26,0.95)']} style={styles.biryaniGrad} />
         <View style={styles.biryaniContent}>
           <Text style={styles.biryaniEyebrow}>CHEF'S SPECIAL</Text>
@@ -279,7 +279,10 @@ export default function HomeScreen() {
       {/* REVIEWS SECTION */}
       <View style={styles.section}>
         <Text style={styles.sectionEyebrow}>WHAT PEOPLE SAY</Text>
-        <Text style={styles.sectionHeadline}>Customer Reviews</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          <Image source={REVIEW_ICON} style={{ width: 34, height: 34 }} resizeMode="contain" />
+          <Text style={styles.sectionHeadline}>Customer Reviews</Text>
+        </View>
 
         {/* Submit Review Form */}
         <View style={styles.reviewForm}>
@@ -662,7 +665,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md, paddingVertical: Spacing.xs,
   },
   logoRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  logoImg: { height: 70, width: 70 },
+  logoImg: { height: 90, width: 90 },
   brandName: { color: '#D4AF37', fontSize: 20, fontWeight: '700', letterSpacing: 0.5 },
   avatarCircle: {
     width: 40, height: 40, borderRadius: 20,
@@ -739,9 +742,9 @@ const styles = StyleSheet.create({
   statLbl: { fontSize: FontSize.xs, color: 'rgba(255,255,255,0.6)', marginTop: 2 },
 
   // ── Biryani Feature ──
-  biryaniFeature: { backgroundColor: '#1a0a00', overflow: 'hidden' },
-  biryaniImg: { width: '100%', aspectRatio: 16 / 7 },
-  biryaniGrad: { position: 'absolute', bottom: 0, left: 0, right: 0, height: 260 },
+  biryaniFeature: { position: 'relative', height: 440, backgroundColor: '#1a0a00', overflow: 'hidden' },
+  biryaniImg: { width: '100%', height: 440, position: 'absolute', top: 0, left: 0 },
+  biryaniGrad: { position: 'absolute', bottom: 0, left: 0, right: 0, height: 240 },
   biryaniContent: { position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2, padding: Spacing.xl },
   biryaniEyebrow: { fontSize: FontSize.xs, fontWeight: FontWeight.semiBold, color: '#D4AF37', letterSpacing: 2, textTransform: 'uppercase', marginBottom: Spacing.xs },
   biryaniTitle: { fontSize: 34, fontWeight: FontWeight.extraBold, color: '#fff', marginBottom: Spacing.sm },
