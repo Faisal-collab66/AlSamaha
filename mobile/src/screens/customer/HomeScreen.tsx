@@ -358,17 +358,17 @@ export default function HomeScreen() {
             <Text style={styles.footerContactHeading}>Contact</Text>
             <Text style={styles.footerContactSub}>Questions? Reach out anytime!</Text>
             <View style={styles.footerSocialRow}>
-              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8}>
-                <Ionicons name="logo-facebook" size={20} color="#D4AF37" />
+              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.facebook.com/alsamahatasty')}>
+                <Ionicons name="logo-facebook" size={22} color="#D4AF37" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8}>
-                <Ionicons name="logo-instagram" size={20} color="#D4AF37" />
+              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.instagram.com/alsamahatasty')}>
+                <Ionicons name="logo-instagram" size={22} color="#D4AF37" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8}>
-                <Ionicons name="logo-tiktok" size={20} color="#D4AF37" />
+              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.tiktok.com/@alsamahatasty')}>
+                <Ionicons name="logo-tiktok" size={22} color="#D4AF37" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8}>
-                <Ionicons name="logo-twitter" size={20} color="#D4AF37" />
+              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://twitter.com/alsamahatasty')}>
+                <Ionicons name="logo-twitter" size={22} color="#D4AF37" />
               </TouchableOpacity>
             </View>
           </View>
@@ -609,17 +609,17 @@ export default function HomeScreen() {
         <View style={styles.socialSection}>
           <Text style={styles.socialTitle}>Follow Us</Text>
           <View style={styles.socialRow}>
-            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8}>
+            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.instagram.com/alsamahatasty')}>
               <LinearGradient colors={['#f09433', '#e6683c', '#dc2743', '#cc2366', '#bc1888']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }} style={styles.socialBtnGradient}>
                 <Ionicons name="logo-instagram" size={22} color="#fff" /><Text style={styles.socialBtnText}>Instagram</Text>
               </LinearGradient>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8}>
+            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.facebook.com/alsamahatasty')}>
               <View style={[styles.socialBtnGradient, { backgroundColor: '#1877F2' }]}>
                 <Ionicons name="logo-facebook" size={22} color="#fff" /><Text style={styles.socialBtnText}>Facebook</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8}>
+            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.tiktok.com/@alsamahatasty')}>
               <LinearGradient colors={['#010101', '#ee1d52']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.socialBtnGradient}>
                 <Ionicons name="logo-tiktok" size={22} color="#fff" /><Text style={styles.socialBtnText}>TikTok</Text>
               </LinearGradient>
@@ -652,7 +652,13 @@ const styles = StyleSheet.create({
   },
 
   // ── Header ──
-  headerWrapper: { backgroundColor: Colors.primaryDeep },
+  headerWrapper: {
+    backgroundColor: Colors.primaryDeep,
+    ...Platform.select({
+      web: { position: 'sticky', top: 0, zIndex: 100 } as any,
+      default: {},
+    }),
+  },
   topBar: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: Spacing.md, paddingVertical: Spacing.xs,
