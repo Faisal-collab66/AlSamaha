@@ -57,6 +57,10 @@ const FEATURE_SVGS: Record<string, string> = {
   restaurant: 'M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z',
   home: 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z',
   bicycle: 'M15.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM5 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5zm5.8-10l2.4-2.4.8.8c1.3 1.3 3 2.1 5.1 2.1V9c-1.5 0-2.7-.6-3.6-1.5l-1.9-1.9c-.5-.4-1-.6-1.6-.6s-1.1.2-1.4.6L7.8 8.4C7.4 8.8 7 9.5 7 10c0 .6.2 1.2.6 1.6L11 15v5h2v-6l-2.2-2.5zM19 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z',
+  leaf: 'M17 8C8 10 5.9 16.17 3.82 21.34c.67.19 1.37.29 2.08.29 6.19 0 10.1-5.26 10.1-11.63 0-.36-.02-.71-.06-1.06C17.28 9.28 19.5 9 22 8c0-6-4-8-4-8S14 8 11 8c0 0-2 0-3 3 2-1 3.5-1 5-1s4-2 4-2z',
+  phone: 'M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z',
+  mail: 'M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z',
+  mobile: 'M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z',
 };
 
 function FeatureIcon({ name, svgKey, size, color }: { name: any; svgKey: string; size: number; color: string }) {
@@ -125,7 +129,7 @@ export default function HomeScreen() {
   useEffect(() => {
     setLoading(true);
     const unsub = subscribeToMenu((cats, itms) => {
-      setCategories(cats);
+      setCategories(cats.length > 0 ? cats : STATIC_CATEGORIES);
       setItems(itms);
       setLoading(false);
     });
@@ -309,7 +313,7 @@ export default function HomeScreen() {
         <View style={styles.flavorsRow}>
           <View style={styles.flavorsCards}>
             {[
-              { icon: 'leaf-outline' as const, img: null, svgKey: '', title: 'Fresh Ingredients', desc: 'Locally sourced produce, fresh every day.' },
+              { icon: 'leaf-outline' as const, img: null, svgKey: 'leaf', title: 'Fresh Ingredients', desc: 'Locally sourced produce, fresh every day.' },
               { icon: 'restaurant-outline' as const, img: null, svgKey: 'restaurant', title: 'Traditional Recipes', desc: 'Generational heritage dishes, never compromised.' },
               { icon: 'home-outline' as const, img: null, svgKey: 'home', title: 'Cozy Ambiance', desc: 'A warm atmosphere that feels like home.' },
               { icon: 'bicycle-outline' as const, img: null, svgKey: 'bicycle', title: 'Fast Delivery', desc: 'Live tracking from kitchen to your door.' },
@@ -442,15 +446,15 @@ export default function HomeScreen() {
           {/* Center: Info + Order Now */}
           <View style={styles.footerCenter}>
             <TouchableOpacity onPress={() => Linking.openURL('tel:+97440015156')} style={styles.footerInfoRow}>
-              <Ionicons name="call-outline" size={15} color="#D4AF37" />
+              <FeatureIcon name="call-outline" svgKey="phone" size={15} color="#D4AF37" />
               <Text style={styles.footerInfoText}><Text style={{ color: 'rgba(212,175,55,0.6)', fontSize: 11 }}>Landline  </Text>+974-4001-5156</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => Linking.openURL('mailto:info@alsamahatasty.com')} style={styles.footerInfoRow}>
-              <Ionicons name="mail-outline" size={15} color="#D4AF37" />
+              <FeatureIcon name="mail-outline" svgKey="mail" size={15} color="#D4AF37" />
               <Text style={styles.footerInfoText}><Text style={{ color: 'rgba(212,175,55,0.6)', fontSize: 11 }}>Email  </Text>info@alsamahatasty.com</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => Linking.openURL('tel:+97477406262')} style={styles.footerInfoRow}>
-              <Ionicons name="phone-portrait-outline" size={15} color="#D4AF37" />
+              <FeatureIcon name="phone-portrait-outline" svgKey="mobile" size={15} color="#D4AF37" />
               <Text style={styles.footerInfoText}><Text style={{ color: 'rgba(212,175,55,0.6)', fontSize: 11 }}>Mobile  </Text>+974-7740-6262</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.bigOrderBtn, { marginTop: Spacing.md, alignSelf: 'flex-start' }]} onPress={openOrder} activeOpacity={0.85}>
