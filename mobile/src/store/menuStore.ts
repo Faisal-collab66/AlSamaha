@@ -34,9 +34,11 @@ export const useMenuStore = create<MenuState>((set, get) => ({
 
   getFilteredItems: () => {
     const { items, searchQuery, selectedCategoryId } = get();
+    const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     return items.filter((item) => {
       const matchesCategory = selectedCategoryId
-        ? item.categoryId === selectedCategoryId
+        ? item.categoryId === selectedCategoryId ||
+          norm(item.categoryId) === norm(selectedCategoryId)
         : true;
       const matchesSearch = searchQuery
         ? item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

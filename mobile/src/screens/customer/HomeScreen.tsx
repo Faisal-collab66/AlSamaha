@@ -60,7 +60,7 @@ const FEATURE_SVGS: Record<string, string> = {
 };
 
 function FeatureIcon({ name, svgKey, size, color }: { name: any; svgKey: string; size: number; color: string }) {
-  if (Platform.OS === 'web') {
+  if (Platform.OS === 'web' && svgKey && FEATURE_SVGS[svgKey]) {
     return React.createElement('svg' as any, {
       width: size, height: size, viewBox: '0 0 24 24', fill: color,
       style: { display: 'block' },
@@ -274,7 +274,7 @@ export default function HomeScreen() {
                 <Text style={styles.itemDesc} numberOfLines={2}>{item.description}</Text>
                 <View style={styles.itemFooter}>
                   <Text style={styles.itemPrice}>QAR {item.price.toFixed(0)}</Text>
-                  <View style={styles.addBtn}><Ionicons name="add" size={18} color="#fff" /></View>
+                  <View style={styles.addBtn}><Image source={TAP_ICON} style={{ width: 20, height: 20 }} resizeMode="contain" /></View>
                 </View>
               </View>
               {item.imageUrl
@@ -309,7 +309,7 @@ export default function HomeScreen() {
         <View style={styles.flavorsRow}>
           <View style={styles.flavorsCards}>
             {[
-              { icon: null as any, img: FRESH_ICON, svgKey: '', title: 'Fresh Ingredients', desc: 'Locally sourced produce, fresh every day.' },
+              { icon: 'leaf-outline' as const, img: null, svgKey: '', title: 'Fresh Ingredients', desc: 'Locally sourced produce, fresh every day.' },
               { icon: 'restaurant-outline' as const, img: null, svgKey: 'restaurant', title: 'Traditional Recipes', desc: 'Generational heritage dishes, never compromised.' },
               { icon: 'home-outline' as const, img: null, svgKey: 'home', title: 'Cozy Ambiance', desc: 'A warm atmosphere that feels like home.' },
               { icon: 'bicycle-outline' as const, img: null, svgKey: 'bicycle', title: 'Fast Delivery', desc: 'Live tracking from kitchen to your door.' },
@@ -443,15 +443,15 @@ export default function HomeScreen() {
           <View style={styles.footerCenter}>
             <TouchableOpacity onPress={() => Linking.openURL('tel:+97440015156')} style={styles.footerInfoRow}>
               <Ionicons name="call-outline" size={15} color="#D4AF37" />
-              <Text style={styles.footerInfoText}>+974 4001 5156</Text>
+              <Text style={styles.footerInfoText}><Text style={{ color: 'rgba(212,175,55,0.6)', fontSize: 11 }}>Landline  </Text>+974-4001-5156</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => Linking.openURL('mailto:info@alsamahatasty.com')} style={styles.footerInfoRow}>
               <Ionicons name="mail-outline" size={15} color="#D4AF37" />
-              <Text style={styles.footerInfoText}>info@alsamahatasty.com</Text>
+              <Text style={styles.footerInfoText}><Text style={{ color: 'rgba(212,175,55,0.6)', fontSize: 11 }}>Email  </Text>info@alsamahatasty.com</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => Linking.openURL('tel:+97477406262')} style={styles.footerInfoRow}>
               <Ionicons name="phone-portrait-outline" size={15} color="#D4AF37" />
-              <Text style={styles.footerInfoText}>+974-7740-6262</Text>
+              <Text style={styles.footerInfoText}><Text style={{ color: 'rgba(212,175,55,0.6)', fontSize: 11 }}>Mobile  </Text>+974-7740-6262</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.bigOrderBtn, { marginTop: Spacing.md, alignSelf: 'flex-start' }]} onPress={openOrder} activeOpacity={0.85}>
               <Text style={styles.bigOrderBtnText}>Order Now</Text>
@@ -514,7 +514,6 @@ export default function HomeScreen() {
         style={{ flexGrow: 0 }}
       />
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginHorizontal: Spacing.md, marginTop: Spacing.md, marginBottom: Spacing.sm }}>
-        <Image source={BIRYANI_IMG} style={{ width: 30, height: 30, borderRadius: 6 }} resizeMode="cover" />
         <Text style={styles.sectionTitle}>{selectedCatName}</Text>
       </View>
     </View>
@@ -542,7 +541,7 @@ export default function HomeScreen() {
               <View style={styles.itemFooter}>
                 <Text style={styles.itemPrice}>QAR {item.price.toFixed(0)}</Text>
                 <TouchableOpacity style={styles.addBtn} onPress={openOrder}>
-                  <Ionicons name="add" size={18} color="#fff" />
+                  <Image source={TAP_ICON} style={{ width: 20, height: 20 }} resizeMode="contain" />
                 </TouchableOpacity>
               </View>
             </View>
