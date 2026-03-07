@@ -11,15 +11,25 @@ export interface Review {
   createdAt: Timestamp | null;
 }
 
-export function subscribeToReviews(callback: (reviews: Review[]) => void): () => void {
+export function subscribeToReviews(
+  callback: (reviews: Review[]) => void,
+  onError?: (err: Error) => void,
+): () => void {
   const q = query(collection(db, 'reviews'), orderBy('createdAt', 'desc'));
-  return onSnapshot(q, (snap) => {
-    const reviews: Review[] = snap.docs.map((d) => ({
-      id: d.id,
-      ...(d.data() as Omit<Review, 'id'>),
-    }));
-    callback(reviews);
-  });
+  return onSnapshot(
+    q,
+    (snap) => {
+      const reviews: Review[] = snap.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<Review, 'id'>),
+      }));
+      callback(reviews);
+    },
+    (err) => {
+      console.error('subscribeToReviews error:', err);
+      if (onError) onError(err);
+    },
+  );
 }
 
 export async function addReview(name: string, rating: number, comment: string): Promise<void> {

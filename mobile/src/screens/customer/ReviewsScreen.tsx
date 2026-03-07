@@ -21,13 +21,28 @@ export default function ReviewsScreen() {
   const insets = useSafeAreaInsets();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsub = subscribeToReviews((r) => {
-      setReviews(r);
+    const timeout = setTimeout(() => {
       setLoading(false);
-    });
-    return unsub;
+      setError('Could not load reviews. Please try again.');
+    }, 5000);
+
+    const unsub = subscribeToReviews(
+      (r) => {
+        clearTimeout(timeout);
+        setReviews(r);
+        setLoading(false);
+        setError(null);
+      },
+      () => {
+        clearTimeout(timeout);
+        setLoading(false);
+        setError('Could not load reviews. Please try again.');
+      },
+    );
+    return () => { unsub(); clearTimeout(timeout); };
   }, []);
 
   return (
@@ -44,6 +59,12 @@ export default function ReviewsScreen() {
       {loading ? (
         <View style={styles.center}>
           <ActivityIndicator color="#D4AF37" size="large" />
+        </View>
+      ) : error ? (
+        <View style={styles.center}>
+          <Text style={{ color: 'rgba(255,255,255,0.4)', fontSize: FontSize.md, textAlign: 'center', paddingHorizontal: 24 }}>
+            {error}
+          </Text>
         </View>
       ) : reviews.length === 0 ? (
         <View style={styles.center}>

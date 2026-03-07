@@ -81,7 +81,7 @@ const STATIC_CATEGORIES: MenuCategory[] = [
   { id: 'bread', name: 'Bread', sortOrder: 2, isActive: true },
   { id: 'curry', name: 'Curry', sortOrder: 3, isActive: true },
   { id: 'vegetarian', name: 'Vegetarian', sortOrder: 4, isActive: true },
-  { id: 'non-veg-starters', name: 'Non-Veg & Starters', sortOrder: 5, isActive: true },
+  { id: 'bbq-non-veg', name: 'BBQ & Non-Veg', sortOrder: 5, isActive: true },
   { id: 'south-indian', name: 'South Indian', sortOrder: 6, isActive: true },
   { id: 'desserts', name: 'Desserts', sortOrder: 7, isActive: true },
   { id: 'beverages', name: 'Beverages', sortOrder: 8, isActive: true },
@@ -122,6 +122,7 @@ export default function HomeScreen() {
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
 
   // Contact tab stagger animations
   const contactAnims = useRef([0, 1, 2, 3].map(() => new Animated.Value(0))).current;
@@ -132,6 +133,8 @@ export default function HomeScreen() {
       setCategories(cats.length > 0 ? cats : STATIC_CATEGORIES);
       setItems(itms);
       setLoading(false);
+      // Debug: log all categoryIds to diagnose Non-Veg & Starters mismatch
+      console.log('[Menu Debug] Unique categoryIds:', [...new Set(itms.map(i => i.categoryId))].map(id => `"${id}" (len=${id?.length})`).join(', '));
     });
     return unsub;
   }, []);
@@ -178,6 +181,8 @@ export default function HomeScreen() {
       setReviewName('');
       setReviewRating(5);
       setReviewComment('');
+      setToastVisible(true);
+      setTimeout(() => setToastVisible(false), 3000);
     } catch (e) {
       // ignore
     }
@@ -483,7 +488,11 @@ export default function HomeScreen() {
     return (
       <TouchableOpacity
         style={[styles.chip, isSelected && styles.chipSelected]}
-        onPress={() => setSelectedCategory(isAll ? null : item.id)}
+        onPress={() => {
+          const newId = isAll ? null : item.id;
+          setSelectedCategory(newId);
+          if (newId) console.log('[Filter Debug] Selected categoryId:', `"${newId}" (len=${newId.length})`, '| name:', `"${item.name}"`);
+        }}
       >
         <Text style={[styles.chipText, isSelected && styles.chipTextSelected]}>{item.name}</Text>
       </TouchableOpacity>
@@ -741,6 +750,11 @@ export default function HomeScreen() {
       {activeTab === 'About' && AboutTab}
       {activeTab === 'Contact' && ContactTab}
       {user && <CartBar />}
+      {toastVisible && (
+        <View style={styles.toast}>
+          <Text style={styles.toastText}>Review submitted! Thank you 🎉</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -920,6 +934,13 @@ const styles = StyleSheet.create({
   footerInfoText: { color: '#D4AF37', fontSize: FontSize.sm },
   footerDivider: { height: 1, backgroundColor: 'rgba(212,175,55,0.15)', marginVertical: Spacing.md },
   footerCopyright: { color: 'rgba(212,175,55,0.5)', fontSize: FontSize.xs, textAlign: 'center' },
+  toast: {
+    position: 'absolute', bottom: 36, alignSelf: 'center',
+    backgroundColor: '#D4AF37', borderRadius: 24,
+    paddingHorizontal: 24, paddingVertical: 12,
+    shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 8, elevation: 8,
+  },
+  toastText: { color: '#0d0a1a', fontWeight: '700' as any, fontSize: FontSize.sm },
 
   // ── Menu Tab ──
   searchCard: {
