@@ -53,8 +53,35 @@ function SocialIcon({ brand, size, color }: { brand: keyof typeof SOCIAL_SVGS; s
   return <Ionicons name={ioName} size={size} color={color} />;
 }
 
+const FEATURE_SVGS: Record<string, string> = {
+  restaurant: 'M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z',
+  home: 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z',
+  bicycle: 'M15.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM5 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5zm5.8-10l2.4-2.4.8.8c1.3 1.3 3 2.1 5.1 2.1V9c-1.5 0-2.7-.6-3.6-1.5l-1.9-1.9c-.5-.4-1-.6-1.6-.6s-1.1.2-1.4.6L7.8 8.4C7.4 8.8 7 9.5 7 10c0 .6.2 1.2.6 1.6L11 15v5h2v-6l-2.2-2.5zM19 12c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z',
+};
+
+function FeatureIcon({ name, svgKey, size, color }: { name: any; svgKey: string; size: number; color: string }) {
+  if (Platform.OS === 'web') {
+    return React.createElement('svg' as any, {
+      width: size, height: size, viewBox: '0 0 24 24', fill: color,
+      style: { display: 'block' },
+    }, React.createElement('path', { d: FEATURE_SVGS[svgKey] }));
+  }
+  return <Ionicons name={name} size={size} color={color} />;
+}
+
 type TopTab = 'Home' | 'Menu' | 'About' | 'Contact';
 const TOP_TABS: TopTab[] = ['Home', 'Menu', 'About', 'Contact'];
+
+const STATIC_CATEGORIES: MenuCategory[] = [
+  { id: 'rice', name: 'Rice', sortOrder: 1, isActive: true },
+  { id: 'bread', name: 'Bread', sortOrder: 2, isActive: true },
+  { id: 'curry', name: 'Curry', sortOrder: 3, isActive: true },
+  { id: 'vegetarian', name: 'Vegetarian', sortOrder: 4, isActive: true },
+  { id: 'non-veg-starters', name: 'Non-Veg & Starters', sortOrder: 5, isActive: true },
+  { id: 'south-indian', name: 'South Indian', sortOrder: 6, isActive: true },
+  { id: 'desserts', name: 'Desserts', sortOrder: 7, isActive: true },
+  { id: 'beverages', name: 'Beverages', sortOrder: 8, isActive: true },
+];
 
 function StarPicker({ value, onChange }: { value: number; onChange: (n: number) => void }) {
   return (
@@ -252,7 +279,7 @@ export default function HomeScreen() {
               </View>
               {item.imageUrl
                 ? <Image source={{ uri: item.imageUrl }} style={styles.menuImage} />
-                : <View style={[styles.menuImage, styles.menuImagePlaceholder]}><Text style={{ fontSize: 30 }}>🍽</Text></View>
+                : <View style={[styles.menuImage, styles.menuImagePlaceholder]}><Image source={TAP_ICON} style={{ width: 44, height: 44 }} resizeMode="contain" /></View>
               }
             </View>
           </TouchableOpacity>
@@ -282,16 +309,16 @@ export default function HomeScreen() {
         <View style={styles.flavorsRow}>
           <View style={styles.flavorsCards}>
             {[
-              { icon: null as any, img: FRESH_ICON, title: 'Fresh Ingredients', desc: 'Locally sourced produce, fresh every day.' },
-              { icon: 'restaurant-outline' as const, img: null, title: 'Traditional Recipes', desc: 'Generational heritage dishes, never compromised.' },
-              { icon: 'home-outline' as const, img: null, title: 'Cozy Ambiance', desc: 'A warm atmosphere that feels like home.' },
-              { icon: 'bicycle-outline' as const, img: null, title: 'Fast Delivery', desc: 'Live tracking from kitchen to your door.' },
+              { icon: null as any, img: FRESH_ICON, svgKey: '', title: 'Fresh Ingredients', desc: 'Locally sourced produce, fresh every day.' },
+              { icon: 'restaurant-outline' as const, img: null, svgKey: 'restaurant', title: 'Traditional Recipes', desc: 'Generational heritage dishes, never compromised.' },
+              { icon: 'home-outline' as const, img: null, svgKey: 'home', title: 'Cozy Ambiance', desc: 'A warm atmosphere that feels like home.' },
+              { icon: 'bicycle-outline' as const, img: null, svgKey: 'bicycle', title: 'Fast Delivery', desc: 'Live tracking from kitchen to your door.' },
             ].map((f) => (
               <View key={f.title} style={styles.featureCard}>
                 <View style={styles.featureIconBox}>
                   {f.img
                     ? <Image source={f.img} style={{ width: 24, height: 24 }} resizeMode="contain" />
-                    : <Ionicons name={f.icon} size={20} color="#D4AF37" />
+                    : <FeatureIcon name={f.icon} svgKey={f.svgKey} size={20} color="#D4AF37" />
                   }
                 </View>
                 <View style={{ flex: 1 }}>
@@ -440,7 +467,8 @@ export default function HomeScreen() {
 
   // ─── MENU TAB ─────────────────────────────────────────────────────────────
   const ALL_CHIP = { id: '__all__', name: 'All' } as MenuCategory;
-  const chipData = [ALL_CHIP, ...categories];
+  const activeCategories = categories.length > 0 ? categories : STATIC_CATEGORIES;
+  const chipData = [ALL_CHIP, ...activeCategories];
 
   const renderCategoryChip = ({ item }: { item: MenuCategory }) => {
     const isAll = item.id === '__all__';
@@ -486,7 +514,7 @@ export default function HomeScreen() {
         style={{ flexGrow: 0 }}
       />
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginHorizontal: Spacing.md, marginTop: Spacing.md, marginBottom: Spacing.sm }}>
-        <Image source={TAP_ICON} style={{ width: 26, height: 26 }} resizeMode="contain" />
+        <Image source={BIRYANI_IMG} style={{ width: 30, height: 30, borderRadius: 6 }} resizeMode="cover" />
         <Text style={styles.sectionTitle}>{selectedCatName}</Text>
       </View>
     </View>
@@ -520,7 +548,7 @@ export default function HomeScreen() {
             </View>
             {item.imageUrl
               ? <Image source={{ uri: item.imageUrl }} style={styles.menuImage} />
-              : <View style={[styles.menuImage, styles.menuImagePlaceholder]}><Text style={{ fontSize: 30 }}>🍽</Text></View>
+              : <View style={[styles.menuImage, styles.menuImagePlaceholder]}><Image source={TAP_ICON} style={{ width: 44, height: 44 }} resizeMode="contain" /></View>
             }
           </View>
         </TouchableOpacity>
@@ -622,6 +650,15 @@ export default function HomeScreen() {
             <Text style={styles.findUsBody}>Come savor authentic flavors in a warm atmosphere — your cozy spot in Al Wukair.</Text>
             <View style={styles.findUsDetail}><Text style={styles.findUsDetailLabel}>Address</Text><Text style={styles.findUsDetailValue}>Ezdan oasis, 106 D 299,{'\n'}Al Wukair, Qatar</Text></View>
             <View style={styles.findUsDetail}><Text style={styles.findUsDetailLabel}>Hours</Text><Text style={styles.findUsDetailValue}>4:30 AM – 11 PM</Text></View>
+            <TouchableOpacity style={styles.findUsDetail} onPress={() => Linking.openURL('tel:+97440015156')} activeOpacity={0.7}>
+              <Text style={styles.findUsDetailLabel}>Landline</Text><Text style={[styles.findUsDetailValue, { color: '#D4AF37' }]}>+974-4001-5156</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.findUsDetail} onPress={() => Linking.openURL('tel:+97477406262')} activeOpacity={0.7}>
+              <Text style={styles.findUsDetailLabel}>Mobile</Text><Text style={[styles.findUsDetailValue, { color: '#D4AF37' }]}>+974-7740-6262</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.findUsDetail} onPress={() => Linking.openURL('mailto:info@alsamahatasty.com')} activeOpacity={0.7}>
+              <Text style={styles.findUsDetailLabel}>Email</Text><Text style={[styles.findUsDetailValue, { color: '#D4AF37' }]}>info@alsamahatasty.com</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.directionsBtn} onPress={() => Linking.openURL('https://maps.google.com/?q=Ezdan+Oasis+D311+Al+Wukair+Qatar')}>
               <Ionicons name="navigate-outline" size={15} color="#D4AF37" /><Text style={styles.directionsBtnText}>Get Directions</Text>
             </TouchableOpacity>
