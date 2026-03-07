@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 import { subscribeToReviews, Review } from '../../services/reviews.service';
 import { Colors, FontSize, FontWeight, Spacing, BorderRadius } from '../../constants/theme';
 
@@ -50,7 +49,7 @@ export default function ReviewsScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Ionicons name="arrow-back" size={22} color="#D4AF37" />
+          <Text style={{ color: '#D4AF37', fontSize: 20, lineHeight: 22 }}>{'‹'}</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Customer Reviews</Text>
         <View style={{ width: 38 }} />

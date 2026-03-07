@@ -81,7 +81,7 @@ const STATIC_CATEGORIES: MenuCategory[] = [
   { id: 'bread', name: 'Bread', sortOrder: 2, isActive: true },
   { id: 'curry', name: 'Curry', sortOrder: 3, isActive: true },
   { id: 'vegetarian', name: 'Vegetarian', sortOrder: 4, isActive: true },
-  { id: 'bbq-non-veg', name: 'BBQ & Non-Veg', sortOrder: 5, isActive: true },
+  { id: 'starters', name: 'BBQ & Non-Veg', sortOrder: 5, isActive: true },
   { id: 'south-indian', name: 'South Indian', sortOrder: 6, isActive: true },
   { id: 'desserts', name: 'Desserts', sortOrder: 7, isActive: true },
   { id: 'beverages', name: 'Beverages', sortOrder: 8, isActive: true },
@@ -123,6 +123,7 @@ export default function HomeScreen() {
   const [reviewComment, setReviewComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
+  const [toastError, setToastError] = useState(false);
 
   // Contact tab stagger animations
   const contactAnims = useRef([0, 1, 2, 3].map(() => new Animated.Value(0))).current;
@@ -176,15 +177,21 @@ export default function HomeScreen() {
   const submitReview = async () => {
     if (!reviewName.trim() || !reviewComment.trim()) return;
     setSubmittingReview(true);
+    console.log('[Review] Submitting:', { name: reviewName, rating: reviewRating, comment: reviewComment });
     try {
       await addReview(reviewName, reviewRating, reviewComment);
+      console.log('[Review] Saved successfully');
       setReviewName('');
       setReviewRating(5);
       setReviewComment('');
+      setToastError(false);
       setToastVisible(true);
       setTimeout(() => setToastVisible(false), 3000);
-    } catch (e) {
-      // ignore
+    } catch (e: any) {
+      console.error('[Review] Submit error:', e?.message ?? e);
+      setToastError(true);
+      setToastVisible(true);
+      setTimeout(() => setToastVisible(false), 3000);
     }
     setSubmittingReview(false);
   };
@@ -208,7 +215,10 @@ export default function HomeScreen() {
       </View>
       <View style={styles.topNavRow}>
         {TOP_TABS.map((tab) => (
-          <TouchableOpacity key={tab} style={styles.topNavItem} onPress={() => setActiveTab(tab)}>
+          <TouchableOpacity key={tab} style={styles.topNavItem} onPress={() => {
+            setActiveTab(tab);
+            if (Platform.OS === 'web') window.scrollTo(0, 0);
+          }}>
             <Text style={[styles.topNavLabel, activeTab === tab && styles.topNavLabelActive]}>{tab}</Text>
             {activeTab === tab && <View style={styles.topNavIndicator} />}
           </TouchableOpacity>
@@ -542,11 +552,7 @@ export default function HomeScreen() {
         <View style={styles.emptyState}>
           <Text style={{ fontSize: 56 }}>🍽</Text>
           <Text style={styles.emptyText}>{isLoading ? 'Loading menu...' : 'No items found'}</Text>
-          {selectedCategoryId && !isLoading && items.length > 0 && (
-            <Text style={{ color: 'rgba(212,175,55,0.5)', fontSize: 11, textAlign: 'center', marginTop: 8, paddingHorizontal: 16 }}>
-              {'categoryIds in data: ' + [...new Set(items.map(i => i.categoryId))].join(' | ')}
-            </Text>
-          )}
+
         </View>
       ) : filteredItems.map((item) => (
         <TouchableOpacity
@@ -752,7 +758,9 @@ export default function HomeScreen() {
       {user && <CartBar />}
       {toastVisible && (
         <View style={styles.toast}>
-          <Text style={styles.toastText}>Review submitted! Thank you 🎉</Text>
+          <Text style={styles.toastText}>
+            {toastError ? 'Something went wrong. Please try again.' : 'Review submitted! Thank you 🎉'}
+          </Text>
         </View>
       )}
     </View>
