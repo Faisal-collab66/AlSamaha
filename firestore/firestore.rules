@@ -134,5 +134,12 @@ service cloud.firestore {
       allow read: if isSignedIn(); // needed for client-side validation
       allow write: if isAdmin();
     }
+
+    // ── Reviews ───────────────────────────────────────────────────────────────
+    match /reviews/{reviewId} {
+      allow read: if true;   // public — anyone can read reviews
+      allow create: if true; // anyone can submit a review (no login required)
+      allow update, delete: if isAdmin();
+    }
   }
 }

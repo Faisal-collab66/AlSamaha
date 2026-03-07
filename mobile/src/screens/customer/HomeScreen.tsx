@@ -943,10 +943,14 @@ const styles = StyleSheet.create({
   footerDivider: { height: 1, backgroundColor: 'rgba(212,175,55,0.15)', marginVertical: Spacing.md },
   footerCopyright: { color: 'rgba(212,175,55,0.5)', fontSize: FontSize.xs, textAlign: 'center' },
   toast: {
-    position: 'absolute', bottom: 36, alignSelf: 'center',
+    ...Platform.select({
+      web: { position: 'fixed', bottom: 36, left: '50%', transform: [{ translateX: '-50%' }] } as any,
+      default: { position: 'absolute', bottom: 36, alignSelf: 'center' },
+    }),
     backgroundColor: '#D4AF37', borderRadius: 24,
     paddingHorizontal: 24, paddingVertical: 12,
     shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 8, elevation: 8,
+    zIndex: 9999,
   },
   toastText: { color: '#0d0a1a', fontWeight: '700' as any, fontSize: FontSize.sm },
 
