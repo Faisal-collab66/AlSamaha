@@ -20,6 +20,9 @@ import { MenuCategory, MenuItem } from '../../types';
 const LOGO = require('../../../assets/trans-logo-transparent.png');
 const BIRYANI_IMG = require('../../../assets/chicken-dum-biryani.webp');
 const REVIEW_ICON = require('../../../assets/review2.png');
+const FRESH_ICON = require('../../../assets/fresh-ingredients.png');
+const SEARCH_ICON = require('../../../assets/search-dishes.png');
+const TAP_ICON = require('../../../assets/tap.png');
 
 const GLORIAFOOD_ORDER_URL = 'https://www.foodbooking.com/api/fb/_b9j_jk';
 const openOrder = () => {
@@ -278,14 +281,17 @@ export default function HomeScreen() {
         <View style={styles.flavorsRow}>
           <View style={styles.flavorsCards}>
             {[
-              { icon: 'leaf-outline' as const, title: 'Fresh Ingredients', desc: 'Locally sourced produce, fresh every day.' },
-              { icon: 'restaurant-outline' as const, title: 'Traditional Recipes', desc: 'Generational heritage dishes, never compromised.' },
-              { icon: 'home-outline' as const, title: 'Cozy Ambiance', desc: 'A warm atmosphere that feels like home.' },
-              { icon: 'bicycle-outline' as const, title: 'Fast Delivery', desc: 'Live tracking from kitchen to your door.' },
+              { icon: null as any, img: FRESH_ICON, title: 'Fresh Ingredients', desc: 'Locally sourced produce, fresh every day.' },
+              { icon: 'restaurant-outline' as const, img: null, title: 'Traditional Recipes', desc: 'Generational heritage dishes, never compromised.' },
+              { icon: 'home-outline' as const, img: null, title: 'Cozy Ambiance', desc: 'A warm atmosphere that feels like home.' },
+              { icon: 'bicycle-outline' as const, img: null, title: 'Fast Delivery', desc: 'Live tracking from kitchen to your door.' },
             ].map((f) => (
               <View key={f.title} style={styles.featureCard}>
                 <View style={styles.featureIconBox}>
-                  <Ionicons name={f.icon} size={20} color="#D4AF37" />
+                  {f.img
+                    ? <Image source={f.img} style={{ width: 24, height: 24 }} resizeMode="contain" />
+                    : <Ionicons name={f.icon} size={20} color="#D4AF37" />
+                  }
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.featureTitle}>{f.title}</Text>
@@ -387,13 +393,13 @@ export default function HomeScreen() {
             <Text style={styles.footerContactHeading}>Contact</Text>
             <Text style={styles.footerContactSub}>Questions? Reach out anytime!</Text>
             <View style={styles.footerSocialRow}>
-              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.facebook.com/alsamahatasty')}>
+              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.facebook.com/profile.php?id=61574546295157')}>
                 <SocialIcon brand="facebook" size={22} color="#D4AF37" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.instagram.com/alsamahatasty')}>
+              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.instagram.com/alsamahatasty/')}>
                 <SocialIcon brand="instagram" size={22} color="#D4AF37" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.tiktok.com/@alsamahatasty')}>
+              <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.tiktok.com/@al.samaha.tasty.re')}>
                 <SocialIcon brand="tiktok" size={22} color="#D4AF37" />
               </TouchableOpacity>
               <TouchableOpacity style={styles.footerSocialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://twitter.com/alsamahatasty')}>
@@ -429,22 +435,30 @@ export default function HomeScreen() {
   );
 
   // ─── MENU TAB ─────────────────────────────────────────────────────────────
+  const ALL_CHIP = { id: '__all__', name: 'All' } as MenuCategory;
+  const chipData = [ALL_CHIP, ...categories];
+
   const renderCategoryChip = ({ item }: { item: MenuCategory }) => {
-    const isSelected = selectedCategoryId === item.id;
+    const isAll = item.id === '__all__';
+    const isSelected = isAll ? selectedCategoryId === null : selectedCategoryId === item.id;
     return (
       <TouchableOpacity
         style={[styles.chip, isSelected && styles.chipSelected]}
-        onPress={() => setSelectedCategory(isSelected ? null : item.id)}
+        onPress={() => setSelectedCategory(isAll ? null : item.id)}
       >
         <Text style={[styles.chipText, isSelected && styles.chipTextSelected]}>{item.name}</Text>
       </TouchableOpacity>
     );
   };
 
+  const selectedCatName = selectedCategoryId
+    ? (categories.find(c => c.id === selectedCategoryId)?.name ?? 'All Dishes')
+    : 'All Dishes';
+
   const MenuTabHeader = (
     <View style={{ backgroundColor: '#0d0a1a' }}>
       <View style={styles.searchCard}>
-        <Ionicons name="search" size={20} color="rgba(255,255,255,0.35)" />
+        <Image source={SEARCH_ICON} style={{ width: 22, height: 22, opacity: 0.7 }} resizeMode="contain" />
         <TextInput
           style={styles.searchInput}
           placeholder="Search dishes..."
@@ -458,9 +472,8 @@ export default function HomeScreen() {
           </TouchableOpacity>
         )}
       </View>
-      <Text style={[styles.sectionTitle, { marginHorizontal: Spacing.md, marginTop: Spacing.md }]}>All Dishes</Text>
       <FlatList
-        data={categories}
+        data={chipData}
         keyExtractor={(c) => c.id}
         renderItem={renderCategoryChip}
         horizontal
@@ -468,6 +481,10 @@ export default function HomeScreen() {
         contentContainerStyle={styles.categoriesContainer}
         style={{ flexGrow: 0 }}
       />
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginHorizontal: Spacing.md, marginTop: Spacing.md, marginBottom: Spacing.sm }}>
+        <Image source={TAP_ICON} style={{ width: 26, height: 26 }} resizeMode="contain" />
+        <Text style={styles.sectionTitle}>{selectedCatName}</Text>
+      </View>
     </View>
   );
 
@@ -638,17 +655,17 @@ export default function HomeScreen() {
         <View style={styles.socialSection}>
           <Text style={styles.socialTitle}>Follow Us</Text>
           <View style={styles.socialRow}>
-            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.instagram.com/alsamahatasty')}>
+            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.instagram.com/alsamahatasty/')}>
               <LinearGradient colors={['#f09433', '#e6683c', '#dc2743', '#cc2366', '#bc1888']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }} style={styles.socialBtnGradient}>
                 <SocialIcon brand="instagram" size={22} color="#fff" /><Text style={styles.socialBtnText}>Instagram</Text>
               </LinearGradient>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.facebook.com/alsamahatasty')}>
+            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.facebook.com/profile.php?id=61574546295157')}>
               <View style={[styles.socialBtnGradient, { backgroundColor: '#1877F2' }]}>
                 <SocialIcon brand="facebook" size={22} color="#fff" /><Text style={styles.socialBtnText}>Facebook</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.tiktok.com/@alsamahatasty')}>
+            <TouchableOpacity style={styles.socialBtn} activeOpacity={0.8} onPress={() => Linking.openURL('https://www.tiktok.com/@al.samaha.tasty.re')}>
               <LinearGradient colors={['#010101', '#ee1d52']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.socialBtnGradient}>
                 <SocialIcon brand="tiktok" size={22} color="#fff" /><Text style={styles.socialBtnText}>TikTok</Text>
               </LinearGradient>
