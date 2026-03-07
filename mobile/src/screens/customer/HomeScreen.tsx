@@ -21,6 +21,15 @@ const LOGO = require('../../../assets/trans-logo-transparent.png');
 const BIRYANI_IMG = require('../../../assets/chicken-dum-biryani.webp');
 const REVIEW_ICON = require('../../../assets/review2.png');
 
+const GLORIAFOOD_ORDER_URL = 'https://www.foodbooking.com/api/fb/_b9j_jk';
+const openOrder = () => {
+  if (typeof window !== 'undefined') {
+    window.open(GLORIAFOOD_ORDER_URL, '_blank');
+  } else {
+    Linking.openURL(GLORIAFOOD_ORDER_URL);
+  }
+};
+
 // SVG paths for social brand icons (Ionicons logo-* don't render on web)
 const SOCIAL_SVGS: Record<string, string> = {
   facebook: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z',
@@ -111,6 +120,7 @@ export default function HomeScreen() {
   }, [activeTab]);
 
   const goToMenu = () => setActiveTab('Menu');
+  const orderNow = openOrder;
 
   const sendContactForm = () => {
     const sub = encodeURIComponent('Contact Form - SamahaXpress');
@@ -189,7 +199,7 @@ export default function HomeScreen() {
             <Text style={styles.ratingLabel}>4.8 · {reviews.length || 15} Reviews</Text>
           </View>
           <View style={styles.heroBtns}>
-            <TouchableOpacity style={styles.orderNowBtn} onPress={goToMenu} activeOpacity={0.85}>
+            <TouchableOpacity style={styles.orderNowBtn} onPress={openOrder} activeOpacity={0.85}>
               <Text style={styles.orderNowText}>Order Now</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.viewMenuBtn} onPress={goToMenu} activeOpacity={0.85}>
@@ -224,7 +234,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             key={item.id}
             style={styles.menuCard}
-            onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
+            onPress={openOrder}
             activeOpacity={0.85}
           >
             <View style={styles.menuCardContent}>
@@ -255,7 +265,7 @@ export default function HomeScreen() {
           <Text style={styles.biryaniDesc}>
             Indian &amp; Pakistani most famous dish around the world, chicken marinated with special spices cooked with Basmati rice to perfection.
           </Text>
-          <TouchableOpacity style={styles.bigOrderBtn} onPress={goToMenu} activeOpacity={0.85}>
+          <TouchableOpacity style={styles.bigOrderBtn} onPress={openOrder} activeOpacity={0.85}>
             <Text style={styles.bigOrderBtnText}>Order Now</Text>
           </TouchableOpacity>
         </View>
@@ -285,7 +295,7 @@ export default function HomeScreen() {
             ))}
           </View>
         </View>
-        <TouchableOpacity style={[styles.bigOrderBtn, { marginTop: Spacing.md }]} onPress={goToMenu} activeOpacity={0.85}>
+        <TouchableOpacity style={[styles.bigOrderBtn, { marginTop: Spacing.md }]} onPress={openOrder} activeOpacity={0.85}>
           <Text style={styles.bigOrderBtnText}>Order Now</Text>
         </TouchableOpacity>
       </View>
@@ -406,7 +416,7 @@ export default function HomeScreen() {
               <Ionicons name="phone-portrait-outline" size={15} color="#D4AF37" />
               <Text style={styles.footerInfoText}>+974-7740-6262</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.bigOrderBtn, { marginTop: Spacing.md, alignSelf: 'flex-start' }]} onPress={goToMenu} activeOpacity={0.85}>
+            <TouchableOpacity style={[styles.bigOrderBtn, { marginTop: Spacing.md, alignSelf: 'flex-start' }]} onPress={openOrder} activeOpacity={0.85}>
               <Text style={styles.bigOrderBtnText}>Order Now</Text>
             </TouchableOpacity>
           </View>
@@ -473,7 +483,7 @@ export default function HomeScreen() {
         <TouchableOpacity
           key={item.id}
           style={styles.menuCard}
-          onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}
+          onPress={openOrder}
           activeOpacity={0.85}
         >
           <View style={styles.menuCardContent}>
@@ -482,7 +492,7 @@ export default function HomeScreen() {
               <Text style={styles.itemDesc} numberOfLines={2}>{item.description}</Text>
               <View style={styles.itemFooter}>
                 <Text style={styles.itemPrice}>QAR {item.price.toFixed(0)}</Text>
-                <TouchableOpacity style={styles.addBtn} onPress={() => navigation.navigate('ItemDetail', { itemId: item.id })}>
+                <TouchableOpacity style={styles.addBtn} onPress={openOrder}>
                   <Ionicons name="add" size={18} color="#fff" />
                 </TouchableOpacity>
               </View>
