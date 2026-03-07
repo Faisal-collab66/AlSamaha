@@ -104,7 +104,7 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const user = useAuthStore((s) => s.user);
   const {
-    categories, isLoading, searchQuery,
+    categories, items, isLoading, searchQuery,
     setCategories, setItems, setLoading, setSearchQuery,
     selectedCategoryId, setSelectedCategory, getFilteredItems,
   } = useMenuStore();
@@ -229,10 +229,13 @@ export default function HomeScreen() {
           <Text style={styles.heroEyebrow}>AUTHENTIC EASTERN CUISINE</Text>
           <Text style={styles.heroHeadline}>Welcome to{'\n'}Al Samaha</Text>
           <Text style={styles.heroTagline}>Bonding With Flavours...</Text>
-          <View style={styles.ratingBadge}>
+          <TouchableOpacity style={styles.ratingBadge} activeOpacity={0.8} onPress={() => {
+            setActiveTab('Home');
+            if (Platform.OS === 'web') setTimeout(() => (document as any).getElementById?.('reviews-section')?.scrollIntoView?.({ behavior: 'smooth' }), 100);
+          }}>
             <Text style={styles.ratingStars}>★★★★★</Text>
-            <Text style={styles.ratingLabel}>4.8 · {reviews.length || 15} Reviews</Text>
-          </View>
+            <Text style={styles.ratingLabel}>4.8 · {reviews.length} Reviews</Text>
+          </TouchableOpacity>
           <View style={styles.heroBtns}>
             <TouchableOpacity style={styles.orderNowBtn} onPress={openOrder} activeOpacity={0.85}>
               <Text style={styles.orderNowText}>Order Now</Text>
@@ -252,7 +255,7 @@ export default function HomeScreen() {
           Biryani, pulao, korma, tandoor and much more — all crafted with authentic spices and time-honoured tradition.
         </Text>
         <View style={styles.statsRow}>
-          {[{ v: '150+', l: 'Menu Items' }, { v: '4.8★', l: 'Rating' }, { v: `${reviews.length || 15}`, l: 'Reviews' }].map((s) => (
+          {[{ v: items.length > 0 ? `${items.length}+` : '150+', l: 'Menu Items' }, { v: '4.8★', l: 'Rating' }, { v: `${reviews.length}`, l: 'Reviews' }].map((s) => (
             <View key={s.l} style={styles.statBox}>
               <Text style={styles.statVal}>{s.v}</Text>
               <Text style={styles.statLbl}>{s.l}</Text>
@@ -339,7 +342,7 @@ export default function HomeScreen() {
       </View>
 
       {/* REVIEWS SECTION */}
-      <View style={styles.section}>
+      <View style={styles.section} nativeID="reviews-section">
         <Text style={styles.sectionEyebrow}>WHAT PEOPLE SAY</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
           <Text style={styles.sectionHeadline}>Customer Reviews</Text>
@@ -530,6 +533,11 @@ export default function HomeScreen() {
         <View style={styles.emptyState}>
           <Text style={{ fontSize: 56 }}>🍽</Text>
           <Text style={styles.emptyText}>{isLoading ? 'Loading menu...' : 'No items found'}</Text>
+          {selectedCategoryId && !isLoading && items.length > 0 && (
+            <Text style={{ color: 'rgba(212,175,55,0.5)', fontSize: 11, textAlign: 'center', marginTop: 8, paddingHorizontal: 16 }}>
+              {'categoryIds in data: ' + [...new Set(items.map(i => i.categoryId))].join(' | ')}
+            </Text>
+          )}
         </View>
       ) : filteredItems.map((item) => (
         <TouchableOpacity
@@ -577,16 +585,16 @@ export default function HomeScreen() {
           </Text>
         </View>
       </ImageBackground>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.photoStrip}>
+      <View style={styles.photoStrip}>
         {[
           'https://images.unsplash.com/photo-1755090154823-2832067d402b?auto=format&fit=crop&w=300&h=200',
           'https://images.unsplash.com/photo-1765265432611-17d3f2da2d5d?auto=format&fit=crop&w=300&h=200',
           'https://images.unsplash.com/photo-1563310761-f8d8ed164063?auto=format&fit=crop&w=300&h=200',
           'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=300&h=200',
         ].map((uri, i) => (
-          <Image key={i} source={{ uri }} style={styles.photoStripImg} />
+          <Image key={i} source={{ uri }} style={styles.photoStripImg} resizeMode="cover" />
         ))}
-      </ScrollView>
+      </View>
       <View style={styles.aboutServicesWrap}>
         <Text style={styles.aboutSectionTitle}>Our Services</Text>
         {[
@@ -606,11 +614,11 @@ export default function HomeScreen() {
         ))}
       </View>
       <View style={styles.aboutStatsBar}>
-        {[{ v: '150+', l: 'Menu Items' }, { v: '4.8★', l: 'Avg Rating' }, { v: `${reviews.length || 15}`, l: 'Reviews' }].map((s, i) => (
-          <View key={s.l} style={[styles.aboutStatItem, i < 2 && styles.aboutStatBorder]}>
+        {[{ v: items.length > 0 ? `${items.length}+` : '150+', l: 'Menu Items', onPress: () => setActiveTab('Menu') }, { v: '4.8★', l: 'Avg Rating', onPress: undefined }, { v: `${reviews.length}`, l: 'Reviews', onPress: () => { setActiveTab('Home'); setTimeout(() => (document as any)?.getElementById?.('reviews-section')?.scrollIntoView?.({ behavior: 'smooth' }), 100); } }].map((s, i) => (
+          <TouchableOpacity key={s.l} style={[styles.aboutStatItem, i < 2 && styles.aboutStatBorder]} onPress={s.onPress} activeOpacity={s.onPress ? 0.7 : 1}>
             <Text style={styles.aboutStatVal}>{s.v}</Text>
             <Text style={styles.aboutStatLbl}>{s.l}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </View>
@@ -957,16 +965,16 @@ const styles = StyleSheet.create({
   aboutEyebrow: { fontSize: FontSize.xs, fontWeight: FontWeight.semiBold, color: '#D4AF37', letterSpacing: 2, textTransform: 'uppercase' },
   aboutHeroTitle: { fontSize: 36, fontWeight: FontWeight.extraBold, color: '#D4AF37', marginTop: Spacing.xs },
   aboutTitleAccent: { width: 50, height: 3, borderRadius: 2, backgroundColor: '#D4AF37', marginVertical: Spacing.sm },
-  aboutHeroBody: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.78)', lineHeight: 22 },
-  photoStrip: { paddingHorizontal: Spacing.md, gap: Spacing.sm, paddingVertical: Spacing.md },
-  photoStripImg: { width: 180, height: 130, borderRadius: BorderRadius.lg },
+  aboutHeroBody: { fontSize: 17, color: '#e8e8e8', lineHeight: 28 },
+  photoStrip: { flexDirection: 'row', paddingHorizontal: Spacing.md, gap: Spacing.sm, paddingVertical: Spacing.md },
+  photoStripImg: { flex: 1, height: 130, borderRadius: BorderRadius.lg },
   aboutServicesWrap: { padding: Spacing.md, gap: Spacing.md },
   aboutSectionTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.extraBold, color: '#D4AF37', marginBottom: Spacing.sm },
   serviceCard: { gap: Spacing.sm },
   serviceCardImg: { width: '100%', height: 160, justifyContent: 'flex-end' },
   serviceCardGrad: { borderRadius: 14, padding: Spacing.md, gap: 4 },
   serviceCardTitle: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: '#fff' },
-  serviceCardDesc: { fontSize: FontSize.sm, color: 'rgba(255,255,255,0.55)', lineHeight: 18 },
+  serviceCardDesc: { fontSize: 17, color: 'rgba(255,255,255,0.88)', lineHeight: 26 },
   aboutStatsBar: {
     flexDirection: 'row', marginHorizontal: Spacing.md, marginTop: Spacing.sm,
     borderRadius: BorderRadius.xl, backgroundColor: '#1a1a2e',
