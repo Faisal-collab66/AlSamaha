@@ -397,8 +397,8 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Reviews List (top 3) */}
-        {reviews.slice(0, 3).map((r) => (
+        {/* Latest Review */}
+        {reviews.slice(0, 1).map((r) => (
           <View key={r.id} style={styles.testimonialCard}>
             <Text style={styles.testimonialStars}>
               {[1, 2, 3, 4, 5].map((s) => (s <= r.rating ? '★' : '☆')).join('')}
@@ -413,26 +413,16 @@ export default function HomeScreen() {
           </View>
         ))}
 
-        {reviews.length > 3 && (
-          <TouchableOpacity
-            style={styles.seeAllReviewsBtn}
-            onPress={() => navigation.navigate('Reviews')}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.seeAllReviewsText}>See All {reviews.length} Reviews</Text>
-            <Image source={REVIEW_ICON} style={styles.reviewBtnIcon} resizeMode="contain" />
-          </TouchableOpacity>
-        )}
-        {reviews.length === 0 && (
-          <TouchableOpacity
-            style={styles.seeAllReviewsBtn}
-            onPress={() => navigation.navigate('Reviews')}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.seeAllReviewsText}>See All Reviews</Text>
-            <Image source={REVIEW_ICON} style={styles.reviewBtnIcon} resizeMode="contain" />
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.seeAllReviewsBtn}
+          onPress={() => navigation.navigate('Reviews')}
+          activeOpacity={0.85}
+        >
+          <Text style={styles.seeAllReviewsText}>
+            {reviews.length > 0 ? `See All ${reviews.length} Reviews` : 'See All Reviews'}
+          </Text>
+          <Image source={REVIEW_ICON} style={styles.reviewBtnIcon} resizeMode="contain" />
+        </TouchableOpacity>
       </View>
 
       {/* FOOTER CONTACT SECTION */}
